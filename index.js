@@ -73,6 +73,10 @@ const gameIO = (function(doc) {
   const cells = doc.querySelectorAll('.cell')
   cells.forEach((cell, i) => {
     cell.addEventListener('click', (e) => {
+      if (doc.querySelector('input')) {
+        alert('Submit Names and Press Start First')
+        return
+      }
       const player = game.getCurrentPlayer()
       let res = game.updateGameState(...getCoordinates(i))
       
@@ -113,7 +117,7 @@ const gameIO = (function(doc) {
       cells.forEach(cell => {cell.textContent = ''})
       resultElem.textContent = ''
     })
-    playerContainer.appendChild(resetButton);
+    playerContainer.insertBefore(resetButton, playerContainer.children[4]);
     
     e.target.remove()
 
