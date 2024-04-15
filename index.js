@@ -3,8 +3,8 @@
 const getCoordinates = (idx) => [ Math.floor(idx / 3), idx % 3 ]
 
 const gameIO = (function(doc) {
-  const ticTacToeGame = (function() {
-    const board = [
+  const TicTacToeGame = function() {
+    let board = [
       ['', '', ''],
       ['', '', ''],
       ['', '', '']
@@ -64,21 +64,59 @@ const gameIO = (function(doc) {
     }
   
     return {updateGameState, getCurrentPlayer}
-  })()
+  }
+
+  let game = TicTacToeGame();
+  const playerContainer = doc.querySelector('.player-container')
+  const resultElem = doc.querySelector('.player-container > p')
 
   const cells = doc.querySelectorAll('.cell')
   cells.forEach((cell, i) => {
     cell.addEventListener('click', (e) => {
-      const player = ticTacToeGame.getCurrentPlayer()
-      const res = ticTacToeGame.updateGameState(...getCoordinates(i))
+      const player = game.getCurrentPlayer()
+      let res = game.updateGameState(...getCoordinates(i))
       
-      if (res === '' || res === player) {
+      if (res !== undefined) {
         e.target.textContent = player
-      } else if (res == 'tie') {
-        //report tie
-      } else {
-        //report winner
+        if (res !== '') {
+          if (res !== 'tie') {
+            res = doc.querySelector(`#${res}`).textContent + ' Won!'
+          }
+          resultElem.textContent = res
+        }
       }
     })
   })
+
+  doc.querySelector('button').addEventListener('click', (e) => {
+    const p1 = doc.querySelector('#X');
+    const p2 = doc.querySelector('#O');
+
+    const p1p = doc.createElement('p');
+    p1p.id = 'X'
+    const p2p = doc.createElement('p');
+    p2p.id = 'O'
+
+    p1p.textContent = p1.value;
+    p2p.textContent = p2.value;
+
+    p1.remove()
+    p2.remove()
+
+    playerContainer.insertBefore(p2p, playerContainer.children[2]);
+    playerContainer.insertBefore(p1p, playerContainer.children[1]);
+
+    const resetButton = doc.createElement('button');
+    resetButton.textContent = 'Restart';
+    resetButton.addEventListener('click', () => {
+      game = TicTacToeGame()
+      cells.forEach(cell => {cell.textContent = ''})
+      resultElem.textContent = ''
+    })
+    playerContainer.appendChild(resetButton);
+    
+    e.target.remove()
+
+  })
+
 })(document)

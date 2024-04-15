@@ -1,3 +1,9 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -19,4 +25,18 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+
+}
+
+.player-container {
+
+}
+
+.player-container div > * {
+    display: block;
+
+}
+
+.player-container > * {
+    margin-bottom: 8px;
 }
